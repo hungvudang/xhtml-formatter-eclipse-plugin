@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="xhtml-formatter-plugin.commands.category"
+            name="Dev Helper">
+      </category>
+      <command
+            categoryId="xhtml-formatter-plugin.commands.category"
+            name="Format (XHTML)"
+            id="xhtml-formatter-plugin.commands.formatCommand">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="xhtmlformatterplugin.handlers.XHTMLFormatHandler"
+            commandId="xhtml-formatter-plugin.commands.formatCommand">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="xhtml-formatter-plugin.commands.formatCommand"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            contextId="org.eclipse.ui.contexts.window"
+            sequence="Alt+F">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+         
+      <menuContribution
+            locationURI="popup:sourcePopupMenuId?after=additions">
+        <command
+              id="xhtml-formatter-plugin.sourcePopupMenu.formatPopup"
+              commandId="xhtml-formatter-plugin.commands.formatCommand"
+              label="Format (XHTML)"
+              style="push">
+              
+              <visibleWhen
+                	checkEnabled="false">
+	              		<with variable="activeEditorInput">
+	              			<adapt type="org.eclipse.core.resources.IFile">
+	              				<test property="org.eclipse.core.resources.extension" value="xhtml" />
+	              			</adapt>
+	              		</with>
+              </visibleWhen>
+        </command>
+      </menuContribution>
+   </extension>
+</plugin>
