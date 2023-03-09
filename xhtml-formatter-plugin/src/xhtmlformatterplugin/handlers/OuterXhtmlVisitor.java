@@ -49,9 +49,9 @@ public class OuterXhtmlVisitor implements NodeVisitor {
 
 					if (!StringUtils.isBlank(enhance)) {
 						indentIfRequired(padding);
-						accum.append(enhance);
+						this.accum.append(enhance);
 					} else {
-						accum.append("\n");
+						this.accum.append("\n");
 					}
 				}
 			}
@@ -63,33 +63,33 @@ public class OuterXhtmlVisitor implements NodeVisitor {
 				data = StringUtils.prependIfMissing(data, " ");
 				data = StringUtils.appendIfMissing(data, " ");
 
-				accum.append("<!--").append(data).append("-->");
+				this.accum.append("<!--").append(data).append("-->");
 			}
 
 			else if (node instanceof Element) {
 				indentIfRequired(padding);
 				final List<Attribute> attributes = new ArrayList<Attribute>(node.attributes().asList());
-				accum.append("<").append(tagName);
+				this.accum.append("<").append(tagName);
 				padding += (1 + tagName.length());
 
 				if (!attributes.isEmpty()) {
 					padding++;
-					accum.append(" ").append(attributes.get(0).html());
+					this.accum.append(" ").append(attributes.get(0).html());
 					for (int i = 1; i < attributes.size() - 1; i++) {
-						accum.append("\n").append(StringUtils.rightPad("", padding));
-						accum.append(attributes.get(i).html());
+						this.accum.append("\n").append(StringUtils.rightPad("", padding));
+						this.accum.append(attributes.get(i).html());
 					}
 
 					if (attributes.size() - 1 > 0) {
-						accum.append("\n").append(StringUtils.rightPad("", padding));
-						accum.append(attributes.get(attributes.size() - 1).html());
+						this.accum.append("\n").append(StringUtils.rightPad("", padding));
+						this.accum.append(attributes.get(attributes.size() - 1).html());
 					}
 				}
 
 				if (node.childNodes().isEmpty()) {
-					accum.append(" />");
+					this.accum.append(" />");
 				} else {
-					accum.append(">");
+					this.accum.append(">");
 				}
 			}
 		}
@@ -100,17 +100,17 @@ public class OuterXhtmlVisitor implements NodeVisitor {
 		if (!StringUtils.startsWith(tagName, "#")) {
 			if (node instanceof Element && !node.childNodes().isEmpty()) {
 				int padding = 3 * (depth - 1);
-				accum.append("\n").append(StringUtils.rightPad("", padding));
-				accum.append("</").append(tagName).append('>');
+				this.accum.append("\n").append(StringUtils.rightPad("", padding));
+				this.accum.append("</").append(tagName).append('>');
 			}
 		}
 	}
 
 	private void indentIfRequired(int padding) throws IOException {
-		if (accum instanceof StringBuilder) {
-			final StringBuilder sb = (StringBuilder) accum;
+		if (this.accum instanceof StringBuilder) {
+			final StringBuilder sb = (StringBuilder) this.accum;
 			if (sb.length() > 0) {
-				accum.append("\n").append(StringUtils.rightPad("", padding));
+				this.accum.append("\n").append(StringUtils.rightPad("", padding));
 			}
 		}
 	}
